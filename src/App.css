@@ -1,47 +1,111 @@
+/* Global layout */
 body {
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  background-color: #f9f9f9;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f6f8;
   color: #333;
+  margin: 0;
+  padding: 0;
 }
 
-a {
-  text-decoration: none;
-  color: inherit;
+h1, h2, h3 {
+  color: #1a202c;
+  margin-bottom: 0.5rem;
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
+p {
+  margin-bottom: 1rem;
+}
+
+/* Navbar */
+.navbar {
+  background-color: #2b6cb0;
   padding: 1rem;
-}
-
-header {
-  background-color: #004aad;
-  color: white;
-  padding: 1rem;
-  text-align: center;
-}
-
-nav a {
-  margin: 0 1rem;
-  font-weight: bold;
-}
-
-.card {
-  background-color: white;
-  padding: 1rem;
-  margin: 1rem 0;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.flex {
   display: flex;
+  align-items: center;
   gap: 1rem;
 }
 
+.navbar a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.navbar a:hover {
+  text-decoration: underline;
+}
+
+.navbar button {
+  background-color: #e53e3e;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.navbar button:hover {
+  background-color: #c53030;
+}
+
+/* Forms */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 400px;
+  margin-bottom: 1rem;
+}
+
+input, select, button {
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+button[type="submit"] {
+  background-color: #2b6cb0;
+  color: #fff;
+  cursor: pointer;
+  border: none;
+}
+
+button[type="submit"]:hover {
+  background-color: #2c5282;
+}
+
+/* Cards */
+.card {
+  background-color: #fff;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* Lists */
 .flex-column {
   display: flex;
   flex-direction: column;
+}
+
+/* Footer */
+footer {
+  background-color: #2b6cb0;
+  color: #fff;
+  padding: 1rem;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  form {
+    max-width: 100%;
+  }
 }
