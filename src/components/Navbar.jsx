@@ -1,0 +1,33 @@
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
+
+function Navbar() {
+  const { user, logout } = useContext(AuthContext);
+
+  return (
+    <nav className="navbar">
+      <Link to="/dashboard">Dashboard</Link>
+      <Link to="/analytics">Analytics</Link>
+      {user ? (
+        <>
+          <span style={{ marginLeft: "1rem" }}>Welcome, {user.name}</span>
+          <button onClick={logout} style={{ marginLeft: "1rem" }}>
+            Logout
+          </button>
+        </>
+      ) : (
+        <>
+          <Link to="/login" style={{ marginLeft: "1rem" }}>
+            Login
+          </Link>
+          <Link to="/register" style={{ marginLeft: "1rem" }}>
+            Register
+          </Link>
+        </>
+      )}
+    </nav>
+  );
+}
+
+export default Navbar;
