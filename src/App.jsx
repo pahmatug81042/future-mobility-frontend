@@ -14,7 +14,12 @@ import RegisterPage from "./pages/RegisterPage";
 import { AuthProvider, AuthContext } from "./context/AuthContext";
 
 function PrivateRoute({ children }) {
-  const { user } = useContext(AuthContext);
+  const { user, loading } = useContext(AuthContext);
+
+  if (loading) {
+    return <p>Loading...</p>; // prevent flicker while session is validated
+  }
+
   return user ? children : <Navigate to="/login" />;
 }
 
