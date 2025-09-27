@@ -5,9 +5,23 @@ import { apiClient } from "../api/apiClient";
 export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    // Load user from localStorage if available
+    const storedUser = localStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
+  const [loading, setLoading] = useState(true);
 
-  // On mount, check session
+  // Keep localStorage in sync whenever user changes
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem("user", JSON.stringify(user));
+    } else {
+      localStorage.removeItem("user");
+    }
+  }, [user]);
+
+  // On mount, validate session with backend
   useEffect(() => {
     async function fetchUser() {
       try {
@@ -15,6 +29,8 @@ export function AuthProvider({ children }) {
         setUser(data.user);
       } catch {
         setUser(null);
+      } finally {
+        setLoading(false);
       }
     }
     fetchUser();
@@ -36,7 +52,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout }}>
+    <AuthContext.Provider value={{ user, login, register, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
