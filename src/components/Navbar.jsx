@@ -9,9 +9,13 @@ function Navbar() {
     <nav className="navbar">
       <Link to="/dashboard">Dashboard</Link>
       <Link to="/analytics">Analytics</Link>
+      <Link to="/fleet">Fleets</Link>
+      <Link to="/transport">Transports</Link>
       <Link to="/about">About</Link>
       {loading ? (
-        <span style={{ marginLeft: "1rem" }}>Checking session...</span>
+        <span style={{ marginLeft: "1rem", color: "#fff" }}>
+          Checking session...
+        </span>
       ) : user ? (
         <>
           <span style={{ marginLeft: "1rem" }}>Welcome, {user.name}</span>
