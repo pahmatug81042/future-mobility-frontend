@@ -1,16 +1,17 @@
 import React from "react";
-import AnalyticsOverview from "../components/AnalyticsDashboard/AnalyticsOverview";
-import UtilizationChart from "../components/AnalyticsDashboard/UtilizationChart";
+import FleetAnalytics from "../components/AnalyticsDashboard/FleetAnalytics";
+import TransportAnalytics from "../components/AnalyticsDashboard/TransportAnalytics";
 
 function AnalyticsPage() {
   return (
     <div>
       <h2>Analytics Dashboard</h2>
       <p>
-        Gain insights into fleet utilization, sustainability, and performance.
+        View fleet and transport performance metrics and sustainability
+        insights.
       </p>
-      <AnalyticsOverview />
-      <UtilizationChart />
+      <FleetAnalytics />
+      <TransportAnalytics />
     </div>
   );
 }
