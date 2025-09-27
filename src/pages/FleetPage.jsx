@@ -1,13 +1,13 @@
 import React from "react";
 import FleetList from "../components/FleetDashboard/FleetList";
+import FleetForm from "../components/FleetDashboard/FleetForm";
 
 function FleetPage() {
   return (
     <div>
       <h2>Fleet Management</h2>
-      <p>
-        Track and monitor all registered fleets with utilization and status.
-      </p>
+      <p>Manage your fleets — view existing fleets or add new ones.</p>
+      <FleetForm />
       <FleetList />
     </div>
   );
