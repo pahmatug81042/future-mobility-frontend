@@ -1,9 +1,11 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { ThemeContext } from "../context/ThemeContext";
 
 function Navbar() {
   const { user, logout, loading } = useContext(AuthContext);
+  const { theme, toggleTheme } = useContext(ThemeContext);
 
   return (
     <nav className="navbar">
@@ -12,6 +14,11 @@ function Navbar() {
       <Link to="/fleet">Fleets</Link>
       <Link to="/transport">Transports</Link>
       <Link to="/about">About</Link>
+
+      <button onClick={toggleTheme} style={{ marginLeft: "auto" }}>
+        {theme === "light" ? "🌙 Dark Mode" : "☀️ Light Mode"}
+      </button>
+
       {loading ? (
         <span style={{ marginLeft: "1rem", color: "#fff" }}>
           Checking session...
