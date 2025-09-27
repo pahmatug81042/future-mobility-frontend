@@ -1,34 +1,50 @@
-import React from "react";
-import { Routes, Route, Link } from "react-router-dom";
-import Home from "./pages/Home";
-import FleetPage from "./pages/FleetPage";
-import TransportPage from "./pages/TransportPage";
-import LogisticsPage from "./pages/LogisticsPage";
+import React, { useContext } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import Navbar from "./components/Navbar";
+import DashboardPage from "./pages/DashboardPage";
 import AnalyticsPage from "./pages/AnalyticsPage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import { AuthProvider, AuthContext } from "./context/AuthContext";
+
+function PrivateRoute({ children }) {
+  const { user } = useContext(AuthContext);
+  return user ? children : <Navigate to="/login" />;
+}
 
 function App() {
   return (
-    <div>
-      <header>
-        <h1>Future Mobility Dashboard</h1>
-        <nav>
-          <Link to="/">Home</Link>
-          <Link to="/fleets">Fleets</Link>
-          <Link to="/transports">Transports</Link>
-          <Link to="/logistics">Logistics</Link>
-          <Link to="/analytics">Analytics</Link>
-        </nav>
-      </header>
-      <div className="container">
+    <AuthProvider>
+      <Router>
+        <Navbar />
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/fleets" element={<FleetPage />} />
-          <Route path="/transports" element={<TransportPage />} />
-          <Route path="/logistics" element={<LogisticsPage />} />
-          <Route path="/analytics" element={<AnalyticsPage />} />
+          <Route path="/" element={<Navigate to="/dashboard" />} />
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute>
+                <DashboardPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/analytics"
+            element={
+              <PrivateRoute>
+                <AnalyticsPage />
+              </PrivateRoute>
+            }
+          />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
         </Routes>
-      </div>
-    </div>
+      </Router>
+    </AuthProvider>
   );
 }
 
