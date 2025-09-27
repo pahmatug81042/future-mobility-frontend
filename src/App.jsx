@@ -8,6 +8,7 @@ import {
 import Navbar from "./components/Navbar";
 import DashboardPage from "./pages/DashboardPage";
 import AnalyticsPage from "./pages/AnalyticsPage";
+import AboutPage from "./pages/AboutPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import { AuthProvider, AuthContext } from "./context/AuthContext";
@@ -40,6 +41,7 @@ function App() {
               </PrivateRoute>
             }
           />
+          <Route path="/about" element={<AboutPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
         </Routes>
