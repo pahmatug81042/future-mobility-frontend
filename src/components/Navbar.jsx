@@ -9,6 +9,7 @@ function Navbar() {
     <nav className="navbar">
       <Link to="/dashboard">Dashboard</Link>
       <Link to="/analytics">Analytics</Link>
+      <Link to="/about">About</Link>
       {user ? (
         <>
           <span style={{ marginLeft: "1rem" }}>Welcome, {user.name}</span>
