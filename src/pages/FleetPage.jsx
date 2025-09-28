@@ -1,6 +1,6 @@
 import React from "react";
-import FleetList from "../components/FleetDashboard/FleetList";
 import FleetForm from "../components/FleetDashboard/FleetForm";
+import FleetList from "../components/FleetDashboard/FleetList";
 
 function FleetPage() {
   return (
