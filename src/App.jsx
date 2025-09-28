@@ -1,9 +1,5 @@
-import React, { useContext } from "react";
-import {
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import DashboardPage from "./pages/DashboardPage";
@@ -13,15 +9,7 @@ import FleetPage from "./pages/FleetPage";
 import TransportPage from "./pages/TransportPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
-import { AuthContext } from "./context/AuthContext";
-
-function PrivateRoute({ children }) {
-  const { user, loading } = useContext(AuthContext);
-
-  if (loading) return <p>Loading...</p>;
-
-  return user ? children : <Navigate to="/login" />;
-}
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   return (
@@ -29,7 +17,9 @@ function App() {
       <Navbar />
       <div className="container" style={{ padding: "1rem" }}>
         <Routes>
-          <Route path="/" element={<Navigate to="/dashboard" />} />
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+
+          {/* Private routes */}
           <Route
             path="/dashboard"
             element={
@@ -62,6 +52,8 @@ function App() {
               </PrivateRoute>
             }
           />
+
+          {/* Public routes */}
           <Route path="/about" element={<AboutPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />

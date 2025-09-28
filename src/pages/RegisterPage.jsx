@@ -1,74 +1,60 @@
-import React, { useContext } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-import DashboardPage from "./pages/DashboardPage";
-import AnalyticsPage from "./pages/AnalyticsPage";
-import AboutPage from "./pages/AboutPage";
-import FleetPage from "./pages/FleetPage";
-import TransportPage from "./pages/TransportPage";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
-import { AuthContext } from "./context/AuthContext";
+import React, { useState, useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
-// PrivateRoute wrapper to protect authenticated routes
-function PrivateRoute({ children }) {
-  const { user, loading } = useContext(AuthContext);
+function RegisterPage() {
+  const { register } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const [error, setError] = useState("");
 
-  if (loading) return <p>Loading...</p>;
+  function handleChange(e) {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  }
 
-  return user ? children : <Navigate to="/login" />;
-}
+  async function handleSubmit(e) {
+    e.preventDefault();
+    try {
+      await register(form);
+      navigate("/dashboard");
+    } catch (err) {
+      setError("Registration failed. Please try again.", err);
+    }
+  }
 
-function App() {
   return (
-    <>
-      <Navbar />
-      <div className="container" style={{ padding: "1rem" }}>
-        <Routes>
-          <Route path="/" element={<Navigate to="/dashboard" />} />
-          <Route
-            path="/dashboard"
-            element={
-              <PrivateRoute>
-                <DashboardPage />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/analytics"
-            element={
-              <PrivateRoute>
-                <AnalyticsPage />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/fleet"
-            element={
-              <PrivateRoute>
-                <FleetPage />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/transport"
-            element={
-              <PrivateRoute>
-                <TransportPage />
-              </PrivateRoute>
-            }
-          />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          {/* 404 fallback */}
-          <Route path="*" element={<Navigate to="/dashboard" />} />
-        </Routes>
-      </div>
-      <Footer />
-    </>
+    <div>
+      <h2>Register</h2>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="name"
+          placeholder="Name"
+          value={form.name}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={form.email}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={form.password}
+          onChange={handleChange}
+          required
+        />
+        <button type="submit">Register</button>
+        {error && <p style={{ color: "red" }}>{error}</p>}
+      </form>
+    </div>
   );
 }
 
-export default App;
+export default RegisterPage;

@@ -6,14 +6,13 @@ export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
-    // Load persisted user from localStorage
     const storedUser = localStorage.getItem("user");
     return storedUser ? JSON.parse(storedUser) : null;
   });
 
   const [loading, setLoading] = useState(true);
 
-  // Sync localStorage whenever user changes
+  // Sync user with localStorage
   useEffect(() => {
     if (user) localStorage.setItem("user", JSON.stringify(user));
     else localStorage.removeItem("user");
@@ -23,10 +22,12 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     async function fetchUser() {
       try {
-        const { data } = await apiClient.get("/auth/me"); // cookies sent automatically
+        const { data } = await apiClient.get("/auth/me");
         setUser(data.user);
-      } catch {
+      } catch (err) {
+        // 401 or other errors
         setUser(null);
+        console.error(err)
       } finally {
         setLoading(false);
       }
@@ -48,7 +49,11 @@ export function AuthProvider({ children }) {
 
   // Logout
   async function logout() {
-    await apiClient.post("/auth/logout");
+    try {
+      await apiClient.post("/auth/logout");
+    } catch (err) {
+      console.error(err);
+    }
     setUser(null);
   }
 
@@ -57,4 +62,4 @@ export function AuthProvider({ children }) {
       {children}
     </AuthContext.Provider>
   );
-}[]
+}

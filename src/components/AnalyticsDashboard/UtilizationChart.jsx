@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { apiClient } from "../../api/apiClient";
 import { Bar } from "react-chartjs-2";
 import {
@@ -20,36 +20,84 @@ ChartJS.register(
   LinearScale
 );
 
-function UtilizationChart() {
+function UtilizationChart({ refreshSignal }) {
   const [chartData, setChartData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  useEffect(() => {
-    async function fetchUtilization() {
-      try {
-        const { data } = await apiClient.get("/analytics/utilization");
-        setChartData({
-          labels: data.map((item) => item.type),
-          datasets: [
-            {
-              label: "Fleet Utilization (%)",
-              data: data.map((item) => item.averageUtilization),
-              backgroundColor: "rgba(0, 123, 255, 0.6)",
-            },
-          ],
-        });
-      } catch (err) {
-        console.error("Error fetching utilization data:", err);
-      }
+  const fetchUtilization = useCallback(async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const response = await apiClient.get("/analytics/utilization");
+      // Ensure data is an array
+      const dataArray = Array.isArray(response.data) ? response.data : [];
+
+      // Sanitize data for chart
+      const labels = dataArray.map((item) =>
+        item?.type ? String(item.type) : "Unknown"
+      );
+      const dataValues = dataArray.map((item) =>
+        typeof item?.averageUtilization === "number"
+          ? item.averageUtilization
+          : 0
+      );
+
+      setChartData({
+        labels,
+        datasets: [
+          {
+            label: "Fleet Utilization (%)",
+            data: dataValues,
+            backgroundColor: "rgba(0, 123, 255, 0.6)",
+          },
+        ],
+      });
+    } catch (err) {
+      console.error("Error fetching utilization data:", err);
+      setError("Failed to load utilization chart.");
+      setChartData({
+        labels: [],
+        datasets: [],
+      });
+    } finally {
+      setLoading(false);
     }
-    fetchUtilization();
   }, []);
 
-  if (!chartData) return <p>Loading utilization chart...</p>;
+  // Fetch chart on mount and when refreshSignal changes
+  useEffect(() => {
+    fetchUtilization();
+  }, [fetchUtilization, refreshSignal]);
+
+  if (loading) return <p>Loading utilization chart...</p>;
+  if (error) return <p style={{ color: "red" }}>{error}</p>;
+  if (!chartData || chartData.labels.length === 0)
+    return <p>No utilization data available.</p>;
 
   return (
     <div className="card">
       <h3>Fleet Utilization by Transport Type</h3>
-      <Bar data={chartData} />
+      <Bar
+        data={chartData}
+        options={{
+          responsive: true,
+          plugins: {
+            legend: { position: "top" },
+            title: { display: true, text: "Fleet Utilization" },
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 100,
+              title: { display: true, text: "Utilization (%)" },
+            },
+            x: {
+              title: { display: true, text: "Transport Type" },
+            },
+          },
+        }}
+      />
     </div>
   );
 }
