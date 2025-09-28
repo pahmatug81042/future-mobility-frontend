@@ -11,7 +11,6 @@ import {
   LinearScale,
 } from "chart.js";
 
-// Register chart.js components
 ChartJS.register(
   Title,
   Tooltip,
@@ -38,8 +37,8 @@ function UtilizationChart() {
             },
           ],
         });
-      } catch (error) {
-        console.error("Error fetching utilization data:", error);
+      } catch (err) {
+        console.error("Error fetching utilization data:", err);
       }
     }
     fetchUtilization();

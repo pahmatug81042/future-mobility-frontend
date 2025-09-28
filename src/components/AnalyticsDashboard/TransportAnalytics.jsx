@@ -11,7 +11,6 @@ function TransportAnalytics() {
       setLoading(true);
       try {
         const { data } = await apiClient.get("/analytics/transport-summary");
-        // replace with actual backend endpoint
         setTransportData(data);
       } catch (err) {
         console.error(err);

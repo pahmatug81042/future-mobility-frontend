@@ -3,19 +3,22 @@ import { apiClient } from "../../api/apiClient";
 
 function AnalyticsOverview() {
   const [summary, setSummary] = useState(null);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     async function fetchSummary() {
       try {
         const { data } = await apiClient.get("/analytics/summary");
         setSummary(data);
-      } catch (error) {
-        console.error("Error fetching analytics summary:", error);
+      } catch (err) {
+        console.error("Error fetching analytics summary:", err);
+        setError("Failed to fetch analytics summary.");
       }
     }
     fetchSummary();
   }, []);
 
+  if (error) return <p style={{ color: "red" }}>{error}</p>;
   if (!summary) return <p>Loading analytics summary...</p>;
 
   return (

@@ -18,7 +18,8 @@ function LoginPage() {
       await login(form);
       navigate("/dashboard");
     } catch (err) {
-      setError("Invalid credentials. Please try again.", err);
+      setError("Login failed. Please check your credentials.");
+      console.error(err);
     }
   }
 

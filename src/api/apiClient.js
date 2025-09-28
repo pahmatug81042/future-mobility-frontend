@@ -1,9 +1,10 @@
 import axios from "axios";
 
+// Axios instance for backend API calls
 export const apiClient = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/api",
-    withCredentials: true,
+    baseURL: "http://localhost:5000/api",
+    withCredentials: true, // ✅ Send cookies/auth headers automatically
     headers: {
-        "Content-Type": "application/json"
-    }
+        "Content-Type": "application/json",
+    },
 });

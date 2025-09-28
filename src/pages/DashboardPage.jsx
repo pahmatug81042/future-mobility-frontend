@@ -1,6 +1,6 @@
 import React from "react";
 
-function Home() {
+function DashboardPage() {
   return (
     <div>
       <h2>Welcome to Future Mobility Dashboard</h2>
@@ -9,4 +9,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default DashboardPage;

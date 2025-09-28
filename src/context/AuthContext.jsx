@@ -6,26 +6,24 @@ export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
-    // Load user from localStorage if available
+    // Load persisted user from localStorage
     const storedUser = localStorage.getItem("user");
     return storedUser ? JSON.parse(storedUser) : null;
   });
+
   const [loading, setLoading] = useState(true);
 
-  // Keep localStorage in sync whenever user changes
+  // Sync localStorage whenever user changes
   useEffect(() => {
-    if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
-    } else {
-      localStorage.removeItem("user");
-    }
+    if (user) localStorage.setItem("user", JSON.stringify(user));
+    else localStorage.removeItem("user");
   }, [user]);
 
-  // On mount, validate session with backend
+  // Validate session on mount
   useEffect(() => {
     async function fetchUser() {
       try {
-        const { data } = await apiClient.get("/auth/me");
+        const { data } = await apiClient.get("/auth/me"); // cookies sent automatically
         setUser(data.user);
       } catch {
         setUser(null);
@@ -36,16 +34,19 @@ export function AuthProvider({ children }) {
     fetchUser();
   }, []);
 
+  // Login
   async function login(credentials) {
     const { data } = await apiClient.post("/auth/login", credentials);
     setUser(data.user);
   }
 
+  // Register
   async function register(payload) {
     const { data } = await apiClient.post("/auth/register", payload);
     setUser(data.user);
   }
 
+  // Logout
   async function logout() {
     await apiClient.post("/auth/logout");
     setUser(null);
@@ -56,4 +57,4 @@ export function AuthProvider({ children }) {
       {children}
     </AuthContext.Provider>
   );
-}
+}[]

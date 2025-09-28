@@ -11,7 +11,6 @@ function FleetAnalytics() {
       setLoading(true);
       try {
         const { data } = await apiClient.get("/analytics/fleet-utilization");
-        // replace with actual backend endpoint
         setFleetData(data);
       } catch (err) {
         console.error(err);
