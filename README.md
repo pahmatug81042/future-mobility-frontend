@@ -37,7 +37,7 @@ Efficient transportation and fleet management are critical for sustainable urban
 
 ---
 
-## How We Built It
+## How I Built It
 - **Backend:** Developed RESTful APIs with Node.js, Express, and MongoDB; added validation and sanitization for all routes  
 - **Frontend:** Built with React, using Context API for global state, Axios for API calls, and Chart.js for visual analytics  
 - **Deployment:** Backend deployed on Render, frontend on Vercel or similar hosting  
